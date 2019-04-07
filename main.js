@@ -28,7 +28,17 @@ function resizeCanvas() {
     redrawCanvas(canvaDraw.width, canvaDraw.height);
 }
 
+function clearCanvas() {
+    context.clearRect(0, 0, canvaDraw.width, canvaDraw.height);
+    resizeCanvas(canvaDraw.width, canvaDraw.height);
+    emptycoordinates();
+}
 
+function emptycoordinates() {
+    clickX = [];
+    clickY = [];
+    clickDrag = [];
+}
 //Draw
 
 var clickX = new Array();
@@ -81,6 +91,7 @@ var setcolor = document.querySelectorAll(".color-select");
 for (i = 0; i < setcolor.length; i++) {
     setcolor[i].addEventListener("click", function () {
         linecolor = this.style.backgroundColor;
+        emptycoordinates();
     });
 }
 
@@ -103,3 +114,7 @@ function redraw() {
         context.stroke();
     }
 }
+
+$("#clear").click(function () {
+    clearCanvas();
+});
