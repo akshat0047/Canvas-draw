@@ -2,6 +2,7 @@ var canvasDiv = document.getElementById('canva-container');
 var canvas = document.createElement('canvas');
 canvas.setAttribute('id', 'drawCanvas');
 canvasDiv.appendChild(canvas);
+
 if (typeof G_vmlCanvasManager != 'undefined') {
     canvas = G_vmlCanvasManager.initElement(canvas);
 }
@@ -53,7 +54,8 @@ function addClick(x, y, dragging) {
     clickDrag.push(dragging);
 }
 
-$('#drawCanvas').mousedown(function (e) {
+$('#drawCanvas').bind("vmousedown ", function (e) {
+    e.preventDefault();
     var mouseX = e.pageX - this.offsetLeft;
     var mouseY = e.pageY - adjusty;
     paint = true;
@@ -61,20 +63,24 @@ $('#drawCanvas').mousedown(function (e) {
     redraw();
 });
 
-$('#drawCanvas').mousemove(function (e) {
+$('#drawCanvas').bind("vmousemove swipe", function (e) {
+    e.preventDefault();
     if (paint) {
         addClick(e.pageX - this.offsetLeft, e.pageY - adjusty - this.offsetTop, true);
         redraw();
     }
 });
 
-$('#drawCanvas').mouseup(function (e) {
+$('#drawCanvas').bind("vmouseup ", function (e) {
+    e.preventDefault();
     paint = false;
 });
 
-$('#drawCanvas').mouseleave(function (e) {
+$('#drawCanvas').bind("vmousecancel", function (e) {
+    e.preventDefault();
     paint = false;
 });
+
 
 
 function palette() {
@@ -95,7 +101,10 @@ for (i = 0; i < setcolor.length; i++) {
     });
 }
 
-
+$("#palette").change(function () {
+    linecolor = this.value;
+    emptycoordinates();
+});
 
 function redraw() {
     context.lineJoin = "round";
